@@ -1,0 +1,66 @@
+-- The use of the function of JOIN to combine different tables , using the primary key and foreign key
+--Display top 10 countries where customers are based
+
+SELECT 
+D.country,
+COUNT (customer_id) AS number_customer
+FROM customer A
+INNER JOIN address B ON A.address_id=B.address_id
+INNER JOIN city C ON B.city_id=C.city_id
+INNER JOIN country D ON C.country_id=D.country_id
+GROUP BY country
+ORDER BY number_customer DESC
+LIMIT 10
+
+####################################################
+
+--identify the top 10 cities that fall within the top 10 countries from above
+
+SELECT C.city, D.country,
+COUNT (A.customer_id) AS number_customer
+FROM customer A
+INNER JOIN address B ON A.address_id=B.address_id
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_id = D.country_id
+WHERE D.country IN ('India','China','United States','Japan','Mexico','Brazil','Russian Federation',
+                    'Philippines','Turkey','Indonesia')
+GROUP BY C.city, D.country
+ORDER BY number_customer
+LIMIT 10
+
+####################################################################################################
+
+--Find the top 5 customers from the top 10 cities who have paid the highest total amount to Rockbuster
+
+SELECT
+  A.customer_id, A.first_name, A.last_name,
+  D.city,
+  E.country,
+  SUM (B.amount) AS total_amount_rental
+FROM
+  customer A
+INNER JOIN
+  payment B ON A.customer_id = B.customer_id
+INNER JOIN 
+  address C ON A.address_id = C.address_id
+INNER JOIN 
+  city D ON C.city_id = D.city_id
+INNER JOIN
+  country E ON D.country_id = E.country_id
+WHERE
+  D.city IN ('Aurora','Atlixco', 'Xinta','Adoni','Dhule (Dhulia)', Kurashiki','Pingxiang',
+              'Sivas','Celaya','So Leopoldo')-- Top 10 cities in terms of rental rate
+
+GROUP BY A.customer_id, A.first_name, A.last_name,D.city,E.country
+ORDER BY total_amount_rental DESC
+LIMIT 5
+######################################################################################################
+
+
+
+
+
+
+
+
+
