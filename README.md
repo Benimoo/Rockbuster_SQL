@@ -1,5 +1,7 @@
-# SQL_queries
-This will contain SQL queries from all my projects that has been conducted on PostgreSQL
+# Portfolio
+Project: Business Analysis for Rockbuster Stealth LLC 
+
+This will contain SQL queries regarding the project that has been conducted on PostgreSQL
 
 # Introduction
 The company of 'Rockbuster Stealth LLC' is a movie rental company that used to have stores around the globe. Now facing strong competitioin from streaning services such as Netflix and Amazon Prime, the Rockbuster Stealth management is planning to use existing movie licenses to launch an online video rental service in order to stay competitive.
