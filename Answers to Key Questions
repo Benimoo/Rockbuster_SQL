@@ -1,0 +1,164 @@
+------------------------------------------------------
+--Which movie contriutes to the most revenue?
+SELECT 
+A.title,
+SUM(D.amount)AS total_paid
+FROM film A
+INNER JOIN inventory B ON A.film_id=B.film_id
+INNER JOIN rental C ON B.inventory_id=C.inventory_id
+INNER JOIN payment D ON C.rental_id=D.rental_id
+GROUP BY A.title
+ORDER BY total_paid DESC
+LIMIT 10;
+---------------------------------------------------
+--Which movie contriutes to the least revenue?
+SELECT 
+A.title,
+SUM(D.amount)AS total_paid
+FROM film A
+INNER JOIN inventory B ON A.film_id=B.film_id
+INNER JOIN rental C ON B.inventory_id=C.inventory_id
+INNER JOIN payment D ON C.rental_id=D.rental_id
+GROUP BY A.title
+ORDER BY total_paid ASC
+LIMIT 10;
+-----------------------------------------------------
+--What is the average movie rental in days??--
+SELECT
+AVG(rental_duration)
+FROM film;
+
+
+------------------------------------------------
+--Which Country are Rockbuster Customer based in??---
+/*Get customer count and total payment received against each country */
+SELECT country,
+       COUNT(DISTINCT A.customer_id) AS customer_count,
+       SUM(amount) AS total_payment
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_ID = D.country_ID
+INNER JOIN payment E ON a.customer_id = E.customer_id
+GROUP BY country;
+-----------------------------------------------------------
+--What is the average and sum of renting duration for each country?SELECT 
+G.country,
+AVG(A.rental_duration)AS avg_rental_duration,
+SUM(A.rental_duration)AS sum_rental_duration
+FROM film A 
+INNER JOIN inventory B ON A.film_id =B.film_id
+INNER JOIN rental C ON B.inventory_id=C.inventory_id
+INNER JOIN customer D ON C.customer_id =D.customer_id
+INNER JOIN address E ON D.address_id=E.address_id
+INNER JOIN city F ON E.city_id = F.city_id
+INNER JOIN  country G ON F.country_id =G.country_id
+GROUP BY G.country
+ORDER BY sum_rental_duration DESC;?--
+
+------------------------------------------------------------
+--What is the most popular genre/movie category??----
+SELECT
+A.name,
+SUM(F.amount)AS total_paid
+FROM category A
+INNER JOIN film_category B ON A.category_id=B.category_id
+INNER JOIN film C ON B.film_id =C.film_id
+INNER JOIN inventory D ON C.film_id =D.film_id
+INNER JOIN rental E ON D.inventory_id=E.inventory_id
+INNER JOIN payment F ON E.rental_id =F.rental_id 
+GROUP BY A.name
+ORDER BY total_paid DESC;
+-----------------------------------------------------------
+--Where can we find the location of custumers who have spent a lot of money
+--in Rockbuster??---
+SELECT
+D.country,
+COUNT(customer_id)AS number_customer
+FROM customer A
+INNER JOIN address B ON A.address_id=B.address_id
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_id = D.country_id
+GROUP BY country
+ORDER BY number_customer DESC
+LIMIT 10;
+------
+WITH CTE1 AS (SELECT
+D.country,
+COUNT(customer_id)AS number_customer
+FROM customer A
+INNER JOIN address B ON A.address_id=B.address_id
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_id = D.country_id
+GROUP BY country
+ORDER BY number_customer DESC
+LIMIT 10)
+
+SELECT
+C.city,
+COUNT(A.customer_id)AS number_customer
+FROM customer A
+INNER JOIN address B ON A.address_id=B.address_id
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN country D ON C.country_id = D.country_id
+WHERE D.country in (select country from CTE1)
+GROUP BY C.city
+ORDER BY number_customer DESC
+LIMIT 10;
+-------------------------------------------
+WITH CTE1 AS (
+  SELECT
+    D.country,
+    COUNT(customer_id) AS number_customer
+  FROM customer A
+  INNER JOIN address B ON A.address_id = B.address_id
+  INNER JOIN city C ON B.city_id = C.city_id
+  INNER JOIN country D ON C.country_id = D.country_id
+  GROUP BY country
+  ORDER BY number_customer DESC
+  LIMIT 10
+),
+
+CTE2 AS (
+  SELECT
+    C.city,
+    COUNT(customer_id) AS number_customer
+  FROM customer A
+  INNER JOIN address B ON A.address_id = B.address_id
+  INNER JOIN city C ON B.city_id = C.city_id
+  INNER JOIN country D ON C.country_id = D.country_id
+  WHERE D.country IN (SELECT country FROM CTE1)
+  GROUP BY C.city
+  ORDER BY number_customer DESC
+  LIMIT 10
+)
+
+SELECT A.customer_id,
+A.first_name,A.last_name,
+C.city,
+E.country,
+SUM(D.amount) AS total_rental_amount
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id
+INNER JOIN city C ON B.city_id = C.city_id
+INNER JOIN payment D ON A.customer_id =D.customer_id
+INNER JOIN country E ON E.country_id = C.country_id 
+WHERE C.city IN (SELECT city FROM CTE2)
+GROUP BY A.customer_id, C.city, E.country
+ORDER BY total_rental_amount DESC
+LIMIT 5;
+
+--------------------------------------------
+---Do rental amount differ between locations??---
+SELECT 
+E.country,
+COUNT(DISTINCT B.customer_id)AS number_of_customer,
+SUM(A.amount)AS total_paid
+FROM payment A
+INNER JOIN customer B ON A.customer_id =B.customer_id
+INNER JOIN address C ON B.address_id =C.address_id
+INNER JOIN city D ON C.city_id=D.city_id
+INNER JOIN country E ON D.country_id = E.country_id
+GROUP BY E.country
+ORDER BY total_paid DESC
+-----------------------------
