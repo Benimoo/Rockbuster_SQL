@@ -19,8 +19,7 @@ The data set contains information about film inventory, customers, and payments,
 Source: careerfoundry.com
 
 # Results:
-* [Global distribution of customers](https://public.tableau.com/views/GlobalDistributionofRENTALandCustomerofRockbuster/GlobaldistributionofcustumersandRental?:language=de-DE&:display_count=n&:origin=viz_share_link
-<img width="1346" alt="image" src="https://github.com/Benimoo/SQL_queries/assets/159390497/3e3b5240-8b71-4feb-a4bf-d5fafdcdadf5">)
+* [Global distribution of customers](https://public.tableau.com/views/GlobalDistributionofRENTALandCustomerofRockbuster/GlobaldistributionofcustumersandRental?:language=de-DE&:display_count=n&:origin=viz_share_link<img width="1346" alt="image" src="https://github.com/Benimoo/SQL_queries/assets/159390497/3e3b5240-8b71-4feb-a4bf-d5fafdcdadf5">)
 
 
 
