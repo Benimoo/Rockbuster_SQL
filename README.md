@@ -1,5 +1,6 @@
 # Portfolio
-Project: Business Analysis for Rockbuster Stealth LLC 
+
+**Project**: Business Analysis for Rockbuster Stealth LLC 
 
 This will contain SQL queries regarding the project that has been conducted on PostgreSQL
 
@@ -16,7 +17,7 @@ Using a rational data base of Rockbuster Stealth LLC, the following key question
 # Data Set
 The data set contains information about film inventory, customers, and payments, among other things.
 
-Source: careerfoundry.com
+**Source**: careerfoundry.com
 
 # Results:
 * [Global distribution of customers](https://public.tableau.com/views/GlobalDistributionofRENTALandCustomerofRockbuster/GlobaldistributionofcustumersandRental?:language=de-DE&:display_count=n&:origin=viz_share_link)
